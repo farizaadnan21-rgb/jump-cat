@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grafika Endless Runner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div id="game-container">
+        <!-- Canvas for rendering the game -->
+        <canvas id="gfxCanvas"></canvas>
+
+        <!-- UI Layer -->
+        <div id="ui-layer">
+            <div id="sarcasm-notification" class="hidden"></div>
+            <div id="score-panel" class="glass-panel">
+                <div class="score-item">
+                    <span class="label">SCORE</span>
+                    <span id="current-score" class="value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">BEST</span>
+                    <span id="high-score" class="value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">LVL</span>
+                    <span id="speed-level" class="value">1</span>
+                </div>
+            </div>
+
+            <div id="game-over-screen" class="hidden">
+                <div class="game-over-panel glass-panel">
+                    <h2>GAME OVER</h2>
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <button id="restart-btn">RESTART</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
