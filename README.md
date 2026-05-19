@@ -88,3 +88,4 @@ Game ini sangat kompatibel untuk dideploy secara gratis ke Vercel:
 
 * **Lompat / Double Jump**: Tekan tombol `Space`, tombol `ArrowUp`, klik mouse pada canvas, atau tap layar ponsel Anda.
 * **Restart**: Klik atau tap tombol **Restart Game** pada layar Game Over.
+# jump-cat

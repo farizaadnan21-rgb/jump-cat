@@ -11,17 +11,27 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
 }
 
 #game-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    height: auto;
     max-width: 1200px;
     max-height: 800px;
     box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6); /* Subtle shadow, not neon cyan */
     background-color: #000;
+    container-type: size; /* Enable container queries for UI elements scaling */
+}
+
+@media (min-aspect-ratio: 3/2) {
+    #game-container {
+        height: 100%;
+        width: auto;
+    }
 }
 
 canvas {
@@ -54,13 +64,14 @@ canvas {
 /* Score Panel */
 #score-panel {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: clamp(8px, 2.5cqi, 20px);
+    left: clamp(8px, 2.5cqi, 20px);
     display: flex;
-    gap: 30px;
-    padding: 15px 30px;
+    gap: clamp(10px, 3.5cqi, 30px);
+    padding: clamp(6px, 1.8cqi, 15px) clamp(12px, 3.5cqi, 30px);
     pointer-events: auto;
     transition: transform 0.3s ease;
+    border-radius: clamp(6px, 1.5cqi, 12px);
 }
 
 .score-item {
@@ -70,15 +81,15 @@ canvas {
 }
 
 .score-item .label {
-    font-size: 0.75rem;
+    font-size: clamp(8px, 1.25cqi, 12px);
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: clamp(1px, 0.25cqi, 2px);
     color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 5px;
+    margin-bottom: clamp(2px, 0.5cqi, 5px);
 }
 
 .score-item .value {
-    font-size: 1.5rem;
+    font-size: clamp(12px, 2.5cqi, 24px);
     font-weight: 800;
     color: #f1f5f9; /* Clean white-gray */
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
@@ -95,16 +106,17 @@ canvas {
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #f8fafc;
-    padding: 16px 32px;
-    font-size: 1.2rem;
+    padding: clamp(8px, 1.8cqi, 16px) clamp(16px, 3.5cqi, 32px);
+    font-size: clamp(10px, 2cqi, 19.2px);
     font-weight: 700;
-    border-radius: 8px;
+    border-radius: clamp(4px, 1cqi, 8px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
     z-index: 10;
+    width: clamp(200px, 60cqi, 600px);
 }
 
 #sarcasm-notification.show {
@@ -135,10 +147,11 @@ canvas {
 }
 
 .game-over-panel {
-    padding: 40px 60px;
+    padding: clamp(20px, 5cqi, 40px) clamp(30px, 7.5cqi, 60px);
     text-align: center;
     transform: translateY(0);
     transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: clamp(8px, 2cqi, 16px);
 }
 
 #game-over-screen.hidden .game-over-panel {
@@ -146,16 +159,16 @@ canvas {
 }
 
 .game-over-panel h2 {
-    font-size: 3rem;
+    font-size: clamp(24px, 6cqi, 48px);
     font-weight: 800;
     color: #fff;
-    margin-bottom: 10px;
+    margin-bottom: clamp(6px, 1.5cqi, 10px);
     text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
 }
 
 .game-over-panel p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    font-size: clamp(12px, 2cqi, 19.2px);
+    margin-bottom: clamp(15px, 3.75cqi, 30px);
     color: rgba(248, 250, 252, 0.8);
 }
 
@@ -168,13 +181,13 @@ canvas {
 #restart-btn {
     background: transparent;
     color: #f1f5f9;
-    border: 2px solid #e2e8f0;
-    padding: 12px 30px;
+    border: clamp(1px, 0.25cqi, 2px) solid #e2e8f0;
+    padding: clamp(8px, 1.5cqi, 12px) clamp(20px, 3.75cqi, 30px);
     font-family: 'Inter', sans-serif;
-    font-size: 1.2rem;
+    font-size: clamp(12px, 2cqi, 19.2px);
     font-weight: 800;
-    letter-spacing: 2px;
-    border-radius: 8px;
+    letter-spacing: clamp(1px, 0.25cqi, 2px);
+    border-radius: clamp(4px, 1cqi, 8px);
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease;

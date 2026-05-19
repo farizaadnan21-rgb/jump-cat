@@ -1,15 +1,12 @@
 // script.js – Polished Indie Pixel-Art Endless Runner Cat Game
 // -----------------------------------------------------------------
 
-// Canvas utility (high‑DPI aware)
+// Canvas utility (fixed coordinate space)
 function getCanvasContext() {
   const canvas = document.getElementById('gfxCanvas');
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = rect.width * dpr;
-  canvas.height = rect.height * dpr;
+  canvas.width = 1200;
+  canvas.height = 800;
   const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
   return ctx;
 }
 
