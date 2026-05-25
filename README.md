@@ -66,24 +66,6 @@ npx http-server -p 8000
 ```
 Lalu buka `http://localhost:8000/` di browser Anda.
 
-## Cara Deploy ke Vercel
-
-Game ini sangat kompatibel untuk dideploy secara gratis ke Vercel:
-
-1. **Menggunakan GitHub (Sangat Direkomendasikan)**:
-   * Push folder `GrafikaWeb` ke repositori GitHub Anda.
-   * Masuk ke dashboard [Vercel](https://vercel.com/).
-   * Klik **Add New** > **Project**, lalu impor repositori GitHub tersebut.
-   * Vercel akan otomatis mendeteksi konfigurasi static hosting dan menerapkan optimasi dari file `vercel.json` kita. Klik **Deploy**!
-   
-2. **Menggunakan Vercel CLI**:
-   * Buka terminal di folder `GrafikaWeb` dan jalankan:
-     ```bash
-     npm install -g vercel
-     vercel
-     ```
-   * Ikuti petunjuk di terminal untuk mempublikasikan proyek Anda secara instan.
-
 ## Kontrol Game
 
 * **Lompat / Double Jump**: Tekan tombol `Space`, tombol `ArrowUp`, klik mouse pada canvas, atau tap layar ponsel Anda.
