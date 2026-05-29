@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grafika Endless Runner</title>
+    <title>Jump Cat – Endless Runner</title>
+    <meta name="description" content="Jump Cat is a pixel-art endless runner. Dodge obstacles, collect points, and climb the leaderboard!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -33,11 +34,41 @@
                 </div>
             </div>
 
+            <!-- START SCREEN -->
+            <div id="start-screen">
+                <div class="start-panel glass-panel">
+                    <div class="start-logo">
+                        <span class="cat-icon">🐱</span>
+                        <h1>JUMP CAT</h1>
+                        <p class="start-subtitle">Endless Runner</p>
+                    </div>
+                    <div class="start-controls">
+                        <div class="control-hint" id="start-hint">
+                            <span class="key-icon">SPACE</span>
+                            <span class="or-text">or</span>
+                            <span class="tap-icon">TAP</span>
+                            <span class="hint-text">to start</span>
+                        </div>
+                    </div>
+                    <div class="start-tips">
+                        <span class="tip">💡 Double jump supported!</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME OVER SCREEN -->
             <div id="game-over-screen" class="hidden">
                 <div class="game-over-panel glass-panel">
                     <h2>GAME OVER</h2>
                     <p>Final Score: <span id="final-score">0</span></p>
-                    <button id="restart-btn">RESTART</button>
+
+                    <!-- LEADERBOARD -->
+                    <div id="leaderboard-section">
+                        <h3 class="leaderboard-title">🏆 TOP LEADERBOARD</h3>
+                        <ol id="leaderboard-list"></ol>
+                    </div>
+
+                    <button id="restart-btn">PLAY AGAIN</button>
                 </div>
             </div>
         </div>

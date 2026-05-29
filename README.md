@@ -2,72 +2,155 @@
 
 Sebuah game endless runner modern berkinerja tinggi berbasis web yang dibangun menggunakan Vanilla JavaScript, HTML5 Canvas, dan Vanilla CSS. Game ini menampilkan model karakter kucing pixel-art asli yang di-porting secara akurat dari aplikasi grafis desktop C#, kini dimodernisasi dengan fisika gameplay premium, transisi visual dinamis, serta audio retro yang disintesis.
 
-## Fitur Utama
+---
 
-1. **Parallax Background Prosedural**:
-   * Pola bintang berkelap-kelip dinamis.
-   * Lapisan awan komposit multi-layer yang bergerak dengan kecepatan independen.
-   * Parallax cyberpunk skyline yang menampilkan siluet gedung dengan jendela bercahaya acak.
-   * Siklus transisi Siang/Malam berdasarkan pencapaian skor.
+## ✨ Fitur Utama
 
-2. **Porting Sprite Kucing yang Akurat**:
-   * Penyelarasan pivot render presisi tinggi menggunakan penskalaan koordinat dan pencerminan.
-   * Animasi kaki berayun, kepala bergoyang, dan ekor bergoyang secara prosedural.
-   * Efek visual squash dan stretch saat melompat dan mendarat.
+### 🌌 Parallax Background Prosedural
 
-3. **Mekanik Double Jump**:
-   * Kemampuan lompat ganda (double jump) dengan kurva lompatan kedua yang lebih pendek dan berbobot.
-   * Menghasilkan efek ledakan partikel debu abu-abu di bawah kaki kucing untuk umpan balik visual yang responsif.
+* Pola bintang berkelap-kelip dinamis
+* Lapisan awan multi-layer dengan kecepatan independen
+* Siluet kota cyberpunk dengan jendela bercahaya acak
+* Siklus transisi Siang/Malam berdasarkan skor pemain
 
-4. **Variasi Rintangan & Fase Flappy Bird**:
-   * Siluet rintangan yang unik (duri tajam, kotak ganda, pilar tinggi, dan oktagon melayang).
-   * **Tantangan Mode Flappy**: Dipicu saat skor melewati `3500`. Pipa ganda (gaya Flappy Bird) akan muncul secara acak, mengharuskan pemain menggunakan double-jump secara akurat untuk melewati celah tengah. Dilengkapi dengan spanduk peringatan sarkasme di skor `3100` sebelum tantangan dimulai.
+### 🐱 Porting Sprite Kucing yang Akurat
 
-5. **Estetika & Sistem Sarkasme**:
-   * Palet warna gelap yang tenang (nada abu-abu baja `#334155`, `#cbd5e1`, dan `#475569`) membuat rintangan terlihat sangat jelas tanpa efek neon yang mencolok.
-   * Desain UI overlay skor dan tombol restart menggunakan efek glassmorphic.
-   * Sistem notifikasi sarkasme di layar yang mengejek pemain setiap kelipatan `1000` skor.
+* Pixel-art kucing asli dari project C#
+* Animasi kaki, kepala, dan ekor secara prosedural
+* Efek squash & stretch saat lompat dan mendarat
 
-6. **Dukungan Perangkat Mobile (Tap Layar)**:
-   * Kontrol sentuh responsif tinggi menggunakan event listener `touchstart` dengan optimasi anti-gesture (mencegah zoom dan scrolling tidak sengaja saat bermain).
-   * Dukungan tap cepat pada tombol restart tanpa delay klik mobile.
+### 🚀 Mekanik Double Jump
 
-7. **Sistem Teknis Under-the-Hood**:
-   * **Skor & Fisika Independen Terhadap Framerate**: Menggunakan delta waktu presisi tinggi (`dt`) dan akumulator desimal untuk memastikan kecepatan gerakan dan perhitungan skor tetap konsisten di semua jenis monitor (60Hz, 120Hz, 144Hz+).
-   * **Synthesized Audio 8-bit**: Efek suara nostalgia yang disintesis secara dinamis langsung dari Web Audio API browser (tanpa memerlukan aset file audio eksternal).
-   * **Screen Shake & Particle Trails**: Umpan balik visual berupa guncangan layar saat menabrak rintangan, partikel lari, partikel mendarat, serta percikan skor.
+* Sistem double jump responsif
+* Lompatan kedua lebih berat dan realistis
+* Efek partikel debu saat melakukan double jump
 
-## Struktur File
+### ⚠️ Variasi Rintangan & Fase Flappy
+
+* Duri tajam
+* Kotak ganda
+* Pilar tinggi
+* Oktagon melayang
+* Mode Flappy Bird aktif saat skor > `3500`
+
+### 🎭 Estetika & Sistem Sarkasme
+
+* UI glassmorphism modern
+* Palet warna gelap nyaman di mata
+* Notifikasi sarkasme setiap kelipatan skor tertentu
+
+### 📱 Dukungan Mobile
+
+* Touch control responsif
+* Anti zoom & anti accidental scrolling
+* Restart button mobile-friendly
+
+### ⚙️ Sistem Teknis
+
+* Delta-time physics independen terhadap framerate
+* Audio sintetis menggunakan Web Audio API
+* Screen shake & particle effect
+* Optimasi performa HTML5 Canvas
+
+---
+
+# 📂 Struktur File
 
 ```text
 GrafikaWeb/
-├── index.html        # Kerangka HTML, Canvas, & Glass Overlay
-├── style.css         # Styling UI, Tata Letak Glassmorphism, & Transisi
-├── script.js         # Game Controller, Player, Renderer, ObstacleManager, Audio, dan UIManager
-├── vercel.json       # Konfigurasi caching & keamanan untuk deployment Vercel
-└── README.md         # Dokumentasi (Bahasa Indonesia)
+├── index.html
+├── style.css
+├── script.js
+├── vercel.json
+└── README.md
 ```
 
-## Cara Menjalankan Secara Lokal
+---
 
-Game ini dapat dijalankan menggunakan server HTTP lokal apa pun. Contoh:
+# 🚀 Cara Menjalankan Secara Lokal
 
-### 1. Menggunakan Python
-Buka terminal di dalam direktori `GrafikaWeb` dan jalankan:
+## Menggunakan Python
+
 ```bash
 python3 -m http.server 8000
 ```
-Lalu buka `http://localhost:8000/` di browser Anda.
 
-### 2. Menggunakan Node.js (http-server)
-Instal dan jalankan http-server:
+Lalu buka:
+
+```text
+http://localhost:8000
+```
+
+---
+
+## Menggunakan Node.js
+
 ```bash
 npx http-server -p 8000
 ```
-Lalu buka `http://localhost:8000/` di browser Anda.
 
 ## Kontrol Game
 
-* **Lompat / Double Jump**: Tekan tombol `Space`, tombol `ArrowUp`, klik mouse pada canvas, atau tap layar ponsel Anda.
-* **Restart**: Klik atau tap tombol **Restart Game** pada layar Game Over.
-# jump-cat
+---
+
+# 🌍 Deploy ke Vercel
+
+## Menggunakan GitHub
+
+1. Push project ke GitHub:
+
+```bash
+git add .
+git commit -m "Initial release"
+git push
+```
+
+2. Buka:
+https://jump-cat.vercel.app/
+
+3. Import repository GitHub
+4. Klik **Deploy**
+
+---
+
+# 🎮 Kontrol Game
+
+| Aksi              | Kontrol               |
+| ----------------- | --------------------- |
+| Lompat            | `Space`               |
+| Double Jump       | `Space` saat di udara |
+| Alternatif Lompat | `ArrowUp`             |
+| Mouse Control     | Klik Canvas           |
+| Mobile Control    | Tap layar             |
+| Restart           | Tombol Restart        |
+
+---
+
+# 🛠 Tech Stack
+
+* HTML5 Canvas
+* Vanilla JavaScript (ES6 OOP)
+* Vanilla CSS
+* Web Audio API
+* Vercel Deployment
+
+---
+
+# 👨‍💻 Developer
+
+**Fariza Adnan**
+
+GitHub:
+https://github.com/farizaadnan21-rgb
+
+---
+
+# 🔗 Repository
+
+https://github.com/farizaadnan21-rgb
+
+---
+
+# 📜 License
+
+MIT License — free for learning and personal use.

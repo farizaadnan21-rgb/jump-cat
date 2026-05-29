@@ -204,3 +204,193 @@ canvas {
 #restart-btn:active {
     transform: scale(0.95);
 }
+
+/* ==========================================
+   START SCREEN
+   ========================================== */
+#start-screen {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(4, 11, 30, 0.75);
+    backdrop-filter: blur(6px);
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    z-index: 20;
+}
+
+#start-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.start-panel {
+    padding: clamp(24px, 6cqi, 50px) clamp(30px, 8cqi, 70px);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 3cqi, 24px);
+    animation: panelIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes panelIn {
+    from { transform: translateY(30px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.cat-icon {
+    font-size: clamp(32px, 8cqi, 64px);
+    display: block;
+    animation: catBounce 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes catBounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-10px); }
+}
+
+.start-panel h1 {
+    font-size: clamp(24px, 6cqi, 52px);
+    font-weight: 800;
+    color: #f1f5f9;
+    letter-spacing: clamp(2px, 0.6cqi, 6px);
+    text-shadow: 0 0 30px rgba(148, 163, 184, 0.4);
+    margin: 0;
+}
+
+.start-subtitle {
+    font-size: clamp(10px, 2cqi, 16px);
+    font-weight: 600;
+    color: rgba(148, 163, 184, 0.7);
+    letter-spacing: clamp(2px, 0.5cqi, 4px);
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.start-controls {
+    margin-top: clamp(4px, 1cqi, 8px);
+}
+
+.control-hint {
+    display: flex;
+    align-items: center;
+    gap: clamp(8px, 2cqi, 14px);
+    animation: hintPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+}
+
+.key-icon, .tap-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: clamp(4px, 1cqi, 8px);
+    padding: clamp(4px, 1cqi, 8px) clamp(8px, 2cqi, 16px);
+    font-size: clamp(10px, 1.8cqi, 15px);
+    font-weight: 700;
+    color: #e2e8f0;
+    letter-spacing: 1px;
+}
+
+.or-text {
+    font-size: clamp(9px, 1.5cqi, 13px);
+    color: rgba(148, 163, 184, 0.6);
+    font-weight: 600;
+}
+
+.hint-text {
+    font-size: clamp(12px, 2.2cqi, 18px);
+    font-weight: 700;
+    color: #cbd5e1;
+    letter-spacing: 1px;
+}
+
+.start-tips {
+    margin-top: clamp(4px, 1cqi, 8px);
+}
+
+.tip {
+    font-size: clamp(9px, 1.5cqi, 13px);
+    color: rgba(148, 163, 184, 0.55);
+    font-weight: 500;
+}
+
+/* ==========================================
+   LEADERBOARD
+   ========================================== */
+#leaderboard-section {
+    width: 100%;
+    margin-bottom: clamp(12px, 3cqi, 20px);
+}
+
+.leaderboard-title {
+    font-size: clamp(11px, 2cqi, 16px);
+    font-weight: 700;
+    color: rgba(248, 250, 252, 0.75);
+    letter-spacing: clamp(1px, 0.3cqi, 2px);
+    text-transform: uppercase;
+    margin-bottom: clamp(6px, 1.5cqi, 10px);
+}
+
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.8cqi, 6px);
+}
+
+#leaderboard-list li {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1.5cqi, 12px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: clamp(4px, 1cqi, 8px);
+    padding: clamp(4px, 1cqi, 8px) clamp(8px, 2cqi, 14px);
+    font-size: clamp(10px, 1.8cqi, 14px);
+    font-weight: 600;
+    color: #e2e8f0;
+    transition: background 0.2s ease;
+}
+
+#leaderboard-list li.current-run {
+    background: rgba(148, 163, 184, 0.15);
+    border-color: rgba(148, 163, 184, 0.3);
+}
+
+.lb-rank {
+    font-size: clamp(11px, 2cqi, 16px);
+    font-weight: 800;
+    min-width: clamp(20px, 3cqi, 28px);
+    text-align: center;
+}
+
+.lb-rank.rank-1 { color: #fbbf24; } /* Gold   */
+.lb-rank.rank-2 { color: #94a3b8; } /* Silver */
+.lb-rank.rank-3 { color: #c2945a; } /* Bronze */
+
+.lb-score {
+    margin-left: auto;
+    font-weight: 800;
+    color: #f1f5f9;
+}
+
+.lb-new {
+    font-size: clamp(8px, 1.2cqi, 11px);
+    font-weight: 700;
+    color: #fbbf24;
+    letter-spacing: 0.5px;
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    border-radius: 4px;
+    padding: 1px 5px;
+}

@@ -190,6 +190,36 @@ class AudioManager {
 }
 
 // -----------------------------------------------------------------
+// Leaderboard (localStorage, top 10)
+const Leaderboard = {
+  MAX_ENTRIES: 10,
+  KEY: 'jumpcat_leaderboard',
+
+  load() {
+    try {
+      return JSON.parse(localStorage.getItem(this.KEY)) || [];
+    } catch (_) {
+      return [];
+    }
+  },
+
+  save(entries) {
+    localStorage.setItem(this.KEY, JSON.stringify(entries));
+  },
+
+  // Returns { entries, newRank } — newRank is 1-based position of this score (or -1 if not in top 10)
+  addScore(score) {
+    const entries = this.load();
+    entries.push({ score, date: new Date().toLocaleDateString() });
+    entries.sort((a, b) => b.score - a.score);
+    const trimmed = entries.slice(0, this.MAX_ENTRIES);
+    this.save(trimmed);
+    const newRank = trimmed.findIndex(e => e.score === score) + 1;
+    return { entries: trimmed, newRank };
+  },
+};
+
+// -----------------------------------------------------------------
 // UI Manager
 class UIManager {
   constructor() {
@@ -199,6 +229,7 @@ class UIManager {
     this.gameOverScreen = document.getElementById('game-over-screen');
     this.finalScoreEl = document.getElementById('final-score');
     this.restartBtn = document.getElementById('restart-btn');
+    this.startScreen = document.getElementById('start-screen');
   }
 
   update(score, highScore, speedLevel) {
@@ -207,15 +238,21 @@ class UIManager {
     if (this.speedLevelEl) this.speedLevelEl.textContent = speedLevel;
   }
 
+  showStartScreen() {
+    if (this.startScreen) this.startScreen.classList.remove('hidden');
+  }
+
+  hideStartScreen() {
+    if (this.startScreen) this.startScreen.classList.add('hidden');
+  }
+
   showSarcasm(message) {
     const el = document.getElementById('sarcasm-notification');
     if (el) {
       el.textContent = message;
       el.classList.remove('hidden');
       el.classList.add('show');
-      
       if (this.sarcasmTimeout) clearTimeout(this.sarcasmTimeout);
-      
       this.sarcasmTimeout = setTimeout(() => {
         el.classList.remove('show');
       }, 3500);
@@ -224,24 +261,42 @@ class UIManager {
 
   showGameOver(score) {
     if (this.finalScoreEl) this.finalScoreEl.textContent = score;
-    if (this.gameOverScreen) {
-      this.gameOverScreen.classList.remove('hidden');
+
+    // Populate leaderboard
+    const { entries, newRank } = Leaderboard.addScore(score);
+    const list = document.getElementById('leaderboard-list');
+    if (list) {
+      list.innerHTML = '';
+      const rankSymbols = ['🥇', '🥈', '🥉'];
+      entries.forEach((entry, i) => {
+        const rank = i + 1;
+        const isNew = (rank === newRank && entry.score === score);
+        const li = document.createElement('li');
+        if (isNew) li.classList.add('current-run');
+
+        const rankLabel = rankSymbols[i] || `#${rank}`;
+        li.innerHTML = `
+          <span class="lb-rank rank-${rank <= 3 ? rank : 'other'}">${rankLabel}</span>
+          <span class="lb-name">${entry.date}</span>
+          ${isNew ? '<span class="lb-new">NEW</span>' : ''}
+          <span class="lb-score">${entry.score}</span>
+        `;
+        list.appendChild(li);
+      });
     }
+
+    if (this.gameOverScreen) this.gameOverScreen.classList.remove('hidden');
   }
 
   hideGameOver() {
-    if (this.gameOverScreen) {
-      this.gameOverScreen.classList.add('hidden');
-    }
+    if (this.gameOverScreen) this.gameOverScreen.classList.add('hidden');
   }
 
   setupRestartHandler(callback) {
     if (this.restartBtn) {
-      // Clear old listeners by cloning
       const newBtn = this.restartBtn.cloneNode(true);
       this.restartBtn.parentNode.replaceChild(newBtn, this.restartBtn);
       this.restartBtn = newBtn;
-      
       this.restartBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         callback();
@@ -842,6 +897,7 @@ class Game {
     this.highScore = parseInt(localStorage.getItem('highScore') || '0');
     this.speedLevel = 1;
     this.gameOver = false;
+    this.waiting = true; // Waiting for player to start
     this.startTime = 0;
     this.lastTimestamp = 0;
     this.animationFrameId = null;
@@ -860,25 +916,30 @@ class Game {
     this.audioManager = new AudioManager();
     this.uiManager = new UIManager();
 
-    // Inputs setup
+    // Inputs — start game or jump
     window.addEventListener('keydown', (e) => {
       if (e.code === 'Space' || e.code === 'ArrowUp') {
+        if (this.waiting) { this.startGame(); return; }
         this.triggerJump();
       }
     });
 
     this.canvas.addEventListener('mousedown', () => {
+      if (this.waiting) { this.startGame(); return; }
       this.triggerJump();
     });
 
     this.canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Prevent default gestures (zooming, scrolling)
+      e.preventDefault();
+      if (this.waiting) { this.startGame(); return; }
       this.triggerJump();
     }, { passive: false });
 
     this.uiManager.setupRestartHandler(() => this.restart());
 
-    this.restart();
+    // Show start screen idle loop
+    this.uiManager.showStartScreen();
+    this.setupIdleScene();
   }
 
   triggerJump() {
@@ -905,19 +966,46 @@ class Game {
     }
   }
 
+  // Idle render loop shown on start screen (cat runs, no obstacles)
+  setupIdleScene() {
+    const groundY = this.canvas.height - 30;
+    this.player = new Player(this.config);
+    this.player.y = groundY - 110 * this.config.catScale;
+    this.renderer.particles = [];
+    if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
+    const idleLoop = (ts) => {
+      if (!this.waiting) return;
+      const dt = Math.min(ts - (this.lastTimestamp || ts), 100);
+      this.lastTimestamp = ts;
+      this.player.update(this.config.gravity, groundY, this.gameSpeed);
+      this.renderer.update(this.gameSpeed, dt);
+      this.render();
+      this.animationFrameId = requestAnimationFrame(idleLoop);
+    };
+    this.animationFrameId = requestAnimationFrame(idleLoop);
+  }
+
+  startGame() {
+    this.waiting = false;
+    this.uiManager.hideStartScreen();
+    this.audioManager.init();
+    this.restart();
+  }
+
   restart() {
     this.uiManager.hideGameOver();
 
     // Reset speeds, score, flags
     this.gameSpeed = this.config.initialSpeed;
     this.score = 0;
-    this.scoreFraction = 0; // Fractional accumulator for framerate-independent scoring
+    this.scoreFraction = 0;
     this.speedLevel = 1;
     this.gameOver = false;
+    this.waiting = false;
     this.startTime = performance.now();
     this.lastTimestamp = performance.now();
     this.lastSpeedIncrease = performance.now();
-    this.triggeredCheckpoints = new Set(); // Reset sarcasm messages
+    this.triggeredCheckpoints = new Set();
 
     const groundY = this.canvas.height - 30;
     this.player = new Player(this.config);
@@ -927,9 +1015,7 @@ class Game {
     this.obstacleManager.lastSpawnTime = performance.now();
     this.renderer.particles = [];
 
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
+    if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
     this.animationFrameId = requestAnimationFrame((t) => this.gameLoop(t));
   }
 
